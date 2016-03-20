@@ -1,6 +1,11 @@
 package erostamas.shopper;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 /**
  * Created by etamero on 2016.03.20..
@@ -19,7 +24,6 @@ public class Item {
         _quantity = 1;
         _unit = "darab";
         _done = false;
-        Log.i("Shopper", "Item created: " + _name);
     }
 
     public void setName (String name) {_name = name;}
@@ -34,6 +38,10 @@ public class Item {
     public String getUnit() {return _unit;}
     public boolean getDone() {return _done;}
 
+    @Override
+    public String toString() {
+        return (_name + " " + _quantity + " " + _unit);
+    }
 
 
 }

@@ -5,35 +5,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    ArrayList<Shopping> shoppings;
+    private Shopping _currentShopping;
+    private Store _currentStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Log.i("Shopper", "Started");
-        Shopping shopping = new Shopping();
-        ShoppingList list = new ShoppingList();
-        Item item1 = new Item("ïtem1name");
-        Item item2 = new Item("ïtem2name");
-        Item item3 = new Item("ïtem3name");
-        list.addItem(item1);
-        list.addItem(item2);
-        list.addItem(item3);
-        shopping.addShoppingList(list);
-
-        for (int i = 0; i < shopping.getStoreList().size(); i++) {
-            ShoppingList current_shopping_list = shopping.getStoreList().get(i);
-            Log.i("Shopper", "Store");
-            for (int j = 0; j < current_shopping_list.getList().size(); j++) {
-
-                Log.i("Shopper", "Item");
-
-            }
-
-        }
-
+        setContentView(R.layout.shopping_list_view);
+        shoppings = new ArrayList<Shopping>();
+        initShoppings();
+        showShoppings();
     }
 
     @Override
@@ -56,5 +48,63 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initShoppings() {
+        Shopping shopping = new Shopping();
+
+        Store list = new Store();
+
+        Item item1 = new Item("ïtem1name");
+        Item item2 = new Item("ïtem2name");
+        Item item3 = new Item("ïtem3name");
+        list.addItem(item1);
+        list.addItem(item2);
+        list.addItem(item3);
+
+        shopping.addShoppingList(list);
+        shopping.setName("Shopping_" + shoppings.size());
+        shoppings.add(shopping);
+    }
+
+    public void showShoppings() {
+        ListView lv = (ListView) findViewById(R.id.shoppingListView);
+        ArrayAdapter<Shopping> adapter = new ArrayAdapter<Shopping>(this,
+                android.R.layout.simple_list_item_1, shoppings);
+
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView parentView, View childView,
+                                    int position, long id) {
+                showStores(shoppings.get(position));
+            }
+
+        });
+    }
+
+    public void showStores(final Shopping shopping) {
+        _currentShopping = shopping;
+        setContentView(R.layout.store_list_view);
+        ListView lv = (ListView) findViewById(R.id.storeListView);
+        Log.i("Shopper", "" + shopping.getStoreList().size());
+        ArrayAdapter<Store> adapter = new ArrayAdapter<Store>(this,
+                android.R.layout.simple_list_item_1, shopping.getStoreList());
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView parentView, View childView,
+                                    int position, long id) {
+                showItems(shopping.getStoreList().get(position));
+            }
+
+        });
+    }
+
+    public void showItems(Store store) {
+        _currentStore = store;
+        setContentView(R.layout.item_list_view);
+        ListView lv = (ListView) findViewById(R.id.itemListView);
+        ArrayAdapter<Item> adapter = new ArrayAdapter<Item>(this,
+                android.R.layout.simple_list_item_1, store.getList());
+        lv.setAdapter(adapter);
     }
 }
