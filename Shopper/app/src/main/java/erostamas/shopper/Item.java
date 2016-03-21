@@ -40,7 +40,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return (_name + " " + _quantity + " " + _unit);
+        return (_name + " " + _quantity + " " + _unit + "           " + _done);
     }
 
 

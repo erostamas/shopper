@@ -16,6 +16,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DisplayShoppings"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_display_shoppings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/FullscreenTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="erostamas.shopper.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DisplayShoppingsActivity"
+            android:label="@string/title_activity_display_shoppings"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="erostamas.shopper.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DisplayStoresActivity"
+            android:label="@string/title_activity_display_store"
+            android:parentActivityName=".DisplayShoppingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="erostamas.shopper.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DisplayItemsActivity"
+            android:label="@string/title_activity_display_items"
+            android:parentActivityName=".DisplayStoresActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="erostamas.shopper.DisplayStoresActivity" />
+        </activity>
     </application>
 
 </manifest>

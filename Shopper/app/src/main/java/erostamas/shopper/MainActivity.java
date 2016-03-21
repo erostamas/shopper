@@ -1,5 +1,6 @@
 package erostamas.shopper;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,17 +16,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Shopping> shoppings;
-    private Shopping _currentShopping;
-    private Store _currentStore;
+    public static ArrayList<Shopping> _shoppings;
+    public static Shopping _currentShopping;
+    public static Store _currentStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.shopping_list_view);
-        shoppings = new ArrayList<Shopping>();
+        setContentView(R.layout.activity_main);
+        init();
+        _shoppings = new ArrayList<Shopping>();
         initShoppings();
-        showShoppings();
+        //showShoppings();
     }
 
     @Override
@@ -51,60 +53,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initShoppings() {
-        Shopping shopping = new Shopping();
+        Shopping shopping1 = new Shopping();
+        Shopping shopping2 = new Shopping();
 
         Store list = new Store();
+        list.setStoreName("Spar");
+        Store list2 = new Store();
+        list2.setStoreName("Piac");
 
-        Item item1 = new Item("ïtem1name");
-        Item item2 = new Item("ïtem2name");
-        Item item3 = new Item("ïtem3name");
+        Item item1 = new Item("kenyér");
+        Item item2 = new Item("liszt");
+        Item item3 = new Item("paprika");
         list.addItem(item1);
         list.addItem(item2);
         list.addItem(item3);
+        list2.addItem(item2);
+        list2.addItem(item1);
 
-        shopping.addShoppingList(list);
-        shopping.setName("Shopping_" + shoppings.size());
-        shoppings.add(shopping);
+        shopping1.addShoppingList(list);
+        shopping1.setName("Shopping_" + _shoppings.size());
+        _shoppings.add(shopping1);
+
+        shopping2.addShoppingList(list);
+        shopping2.addShoppingList(list2);
+        shopping2.setName("Shopping_" + _shoppings.size());
+        _shoppings.add(shopping2);
     }
 
-    public void showShoppings() {
-        ListView lv = (ListView) findViewById(R.id.shoppingListView);
-        ArrayAdapter<Shopping> adapter = new ArrayAdapter<Shopping>(this,
-                android.R.layout.simple_list_item_1, shoppings);
+    public void onShowShoppingsButtonClicked () {
+        Intent intent = new Intent(this, DisplayShoppingsActivity.class);
+        startActivity(intent);
+    }
 
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView parentView, View childView,
-                                    int position, long id) {
-                showStores(shoppings.get(position));
+    public void init () {
+        findViewById(R.id.show_shoppings_btn).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                onShowShoppingsButtonClicked();
             }
-
         });
-    }
-
-    public void showStores(final Shopping shopping) {
-        _currentShopping = shopping;
-        setContentView(R.layout.store_list_view);
-        ListView lv = (ListView) findViewById(R.id.storeListView);
-        Log.i("Shopper", "" + shopping.getStoreList().size());
-        ArrayAdapter<Store> adapter = new ArrayAdapter<Store>(this,
-                android.R.layout.simple_list_item_1, shopping.getStoreList());
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView parentView, View childView,
-                                    int position, long id) {
-                showItems(shopping.getStoreList().get(position));
-            }
-
-        });
-    }
-
-    public void showItems(Store store) {
-        _currentStore = store;
-        setContentView(R.layout.item_list_view);
-        ListView lv = (ListView) findViewById(R.id.itemListView);
-        ArrayAdapter<Item> adapter = new ArrayAdapter<Item>(this,
-                android.R.layout.simple_list_item_1, store.getList());
-        lv.setAdapter(adapter);
     }
 }
