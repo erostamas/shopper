@@ -3,6 +3,7 @@ package erostamas.shopper;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,16 +12,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class DisplayShoppingsActivity extends MainActivity {
-
+    private ArrayAdapter<Shopping> _adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("Shopper", "DisplayShoppings activity created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_shoppings);
         ListView lv = (ListView) findViewById(R.id.shoppings_list);
-        ArrayAdapter<Shopping> adapter = new ArrayAdapter<Shopping>(this,
+        _adapter = new ArrayAdapter<Shopping>(this,
                 android.R.layout.simple_list_item_1, _shoppings);
 
-        lv.setAdapter(adapter);
+        lv.setAdapter(_adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parentView, View childView,
                                     int position, long id) {
@@ -51,6 +53,19 @@ public class DisplayShoppingsActivity extends MainActivity {
             return true;
         }
 
+        if (id == R.id.add_shopping) {
+            Intent intent = new Intent(DisplayShoppingsActivity.this, CreateShoppingActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        _adapter.notifyDataSetChanged();
+        Log.i("Shopper", "&&&&&&&&&&&&&&&&&&&&&&&&&");
+        super.onResume();
     }
 }

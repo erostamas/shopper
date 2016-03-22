@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static ArrayList<Shopping> _shoppings;
+    public static ArrayList<Shopping> _shoppings = new ArrayList<Shopping>();;
     public static Shopping _currentShopping;
     public static Store _currentStore;
 
@@ -25,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        _shoppings = new ArrayList<Shopping>();
-        initShoppings();
+        if (_shoppings.size() == 0) {
+            initShoppings();
+        }
         //showShoppings();
     }
 

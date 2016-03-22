@@ -1,6 +1,7 @@
 package erostamas.shopper;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,23 +9,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
-public class DisplayStoresActivity extends MainActivity {
+public class CreateShoppingActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_stores);
-        ListView lv = (ListView) findViewById(R.id.stores_list);
-        ArrayAdapter<Store> adapter = new ArrayAdapter<Store>(this,
-                android.R.layout.simple_list_item_1, _currentShopping.getStoreList());
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView parentView, View childView,
-                                    int position, long id) {
-                _currentStore = _currentShopping.getStoreList().get(position);
-                Intent intent = new Intent(DisplayStoresActivity.this, DisplayItemsActivity.class);
+        setContentView(R.layout.activity_create_shopping);
+        Button save_button = (Button) findViewById(R.id.save_btn);
+        save_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View childView) {
+                TextView new_shopping_name_text = (TextView) findViewById(R.id.new_name);
+                Shopping new_shopping = new Shopping();
+                new_shopping.setName(new_shopping_name_text.getText().toString());
+                _shoppings.add(new_shopping);
+                Log.i("Shopper", "size: " + _shoppings.size());
+                Intent intent = new Intent(CreateShoppingActivity.this,
+                                           DisplayShoppingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
 
@@ -34,7 +39,7 @@ public class DisplayStoresActivity extends MainActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_display_stores, menu);
+        getMenuInflater().inflate(R.menu.menu_create_shopping, menu);
         return true;
     }
 
@@ -48,10 +53,6 @@ public class DisplayStoresActivity extends MainActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
-
-        if (id == R.id.add_store) {
-            Log.i("Shopper", "add store pushed");
         }
 
         return super.onOptionsItemSelected(item);

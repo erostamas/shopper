@@ -69,6 +69,10 @@ public class DisplayItemsActivity extends MainActivity {
             return true;
         }
 
+        if (id == R.id.add_item) {
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

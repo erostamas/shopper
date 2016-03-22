@@ -50,6 +50,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="erostamas.shopper.DisplayStoresActivity" />
         </activity>
+        <activity
+            android:name=".CreateShoppingActivity"
+            android:label="@string/title_activity_create_shopping"
+            android:parentActivityName=".DisplayShoppingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="erostamas.shopper.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

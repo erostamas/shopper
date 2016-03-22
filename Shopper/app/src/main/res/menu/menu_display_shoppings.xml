@@ -4,4 +4,9 @@
     tools:context="erostamas.shopper.DisplayShoppingsActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/add_shopping"
+        android:icon="@drawable/create_new"
+        android:title="x"
+        app:showAsAction="ifRoom"/>
 </menu>
