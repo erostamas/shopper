@@ -1,5 +1,6 @@
 package erostamas.shopper;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class DisplayItemsActivity extends MainActivity {
                     if (swipeDetector.getAction() == Action.LR) {
                         Log.i("Shopper", "Left to right!!!!!!! on item" + position);
                         _currentStore.getList().get(position).setDone(true);
+                        arg0.getChildAt(position).setBackgroundColor(Color.BLUE);
                         adapter.notifyDataSetChanged();
                     }
                     if (swipeDetector.getAction() == Action.RL) {
