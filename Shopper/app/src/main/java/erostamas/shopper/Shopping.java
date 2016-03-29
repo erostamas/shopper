@@ -3,12 +3,13 @@ package erostamas.shopper;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by etamero on 2016.03.20..
  */
-public class Shopping {
+public class Shopping implements Serializable{
     private String _name;
     private ArrayList<Store> _storeList;
 

@@ -1,43 +1,43 @@
 package erostamas.shopper;
 
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class DisplayItemsActivity extends MainActivity {
-
+    private ItemAdapter _adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_items);
         ListView lv = (ListView) findViewById(R.id.items_list);
-        final ArrayAdapter<Item> adapter = new ArrayAdapter<Item>(this,
-                android.R.layout.simple_list_item_1, _currentStore.getList());
-        lv.setAdapter(adapter);
+        _adapter = new ItemAdapter(this,
+                R.layout.item, _currentStore.getList());
+
+        lv.setAdapter(_adapter);
+        registerForContextMenu(lv);
         final SwipeDetector swipeDetector = new SwipeDetector();
         lv.setOnTouchListener(swipeDetector);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, final int position,
+            public void onItemClick(AdapterView<?> adapter_view, View arg1, final int position,
                                     long arg3) {
                 if (swipeDetector.swipeDetected()) {
                     if (swipeDetector.getAction() == Action.LR) {
-                        Log.i("Shopper", "Left to right!!!!!!! on item" + position);
                         _currentStore.getList().get(position).setDone(true);
-                        arg0.getChildAt(position).setBackgroundColor(Color.BLUE);
-                        adapter.notifyDataSetChanged();
+                        _currentStore.pushDoneToBack(position);
+                        _adapter.notifyDataSetChanged();
                     }
                     if (swipeDetector.getAction() == Action.RL) {
-                        Log.i("Shopper", "Right to left!!!!!!! on item" + position);
                         _currentStore.getList().get(position).setDone(false);
-                        adapter.notifyDataSetChanged();
+                        _currentStore.pullUnDoneToFront(position);
+                        _adapter.notifyDataSetChanged();
                     }
                     if (swipeDetector.getAction() == Action.TB) {
 // perform any task
@@ -47,8 +47,6 @@ public class DisplayItemsActivity extends MainActivity {
                     }
                 }
             }
-
-            ;
         });
     }
 
@@ -72,9 +70,47 @@ public class DisplayItemsActivity extends MainActivity {
         }
 
         if (id == R.id.add_item) {
+            Intent intent = new Intent(DisplayItemsActivity.this, CreateItemActivity.class);
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        _adapter.notifyDataSetChanged();
+        super.onResume();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.items_list) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(_currentStore.getList().get(info.position).getName());
+            //String[] menuItems = getResources().getStringArray(R.array.menu);
+            //for (int i = 0; i<menuItems.length; i++) {
+            menu.add(Menu.NONE, 0, 0, "Delete");
+            //menu.add(Menu.NONE, i, i, menuItems[i]);
+            //}
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        if (menuItemIndex == 0) { // delete
+            _currentStore.getList().remove(info.position);
+            _adapter.notifyDataSetChanged();
+        }
+        //String[] menuItems = getResources().getStringArray(R.array.menu);
+        //String menuItemName = menuItems[menuItemIndex];
+        //String listItemName = Countries[info.position];
+        //TextView text = (TextView)findViewById(R.id.footer);
+        //text.setText(String.format("Selected %s for item %s", menuItemName, listItemName));
+        return true;
     }
 }

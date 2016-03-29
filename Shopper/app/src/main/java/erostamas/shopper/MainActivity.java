@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -26,9 +27,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         init();
         if (_shoppings.size() == 0) {
-            initShoppings();
+            //initShoppings();
+            try {
+                _shoppings = (ArrayList<Shopping>) InternalStorage.readObject(this, "Shoppings");
+            } catch (IOException e) {
+                Log.e("Shopper", e.getMessage());
+            } catch (ClassNotFoundException e) {
+                Log.e("Shopper", e.getMessage());
+            }
         }
-        //showShoppings();
     }
 
     @Override
@@ -94,5 +101,17 @@ public class MainActivity extends AppCompatActivity {
                 onShowShoppingsButtonClicked();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            // Save the list of entries to internal storage
+            InternalStorage.writeObject(this, "Shoppings", _shoppings);
+
+        } catch (IOException e) {
+            Log.e("Shopper", e.getMessage());
+        }
     }
 }

@@ -7,10 +7,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.Serializable;
+
 /**
  * Created by etamero on 2016.03.20..
  */
-public class Item {
+public class Item implements Serializable{
 
     private String _name;
     private String _comment;
@@ -42,6 +44,4 @@ public class Item {
     public String toString() {
         return (_name + " " + _quantity + " " + _unit + "           " + _done);
     }
-
-
 }

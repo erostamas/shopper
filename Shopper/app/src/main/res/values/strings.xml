@@ -10,4 +10,6 @@
     <string name="title_activity_display_store">DisplayStoreActivity</string>
     <string name="title_activity_display_items">DisplayItemsActivity</string>
     <string name="title_activity_create_shopping">CreateShoppingActivity</string>
+    <string name="title_activity_create_item">CreateItemActivity</string>
+    <string name="title_activity_create_store">CreateStoreActivity</string>
 </resources>

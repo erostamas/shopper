@@ -65,7 +65,6 @@ public class DisplayShoppingsActivity extends MainActivity {
     @Override
     public void onResume() {
         _adapter.notifyDataSetChanged();
-        Log.i("Shopper", "&&&&&&&&&&&&&&&&&&&&&&&&&");
         super.onResume();
     }
 }
